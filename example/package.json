@@ -1,0 +1,29 @@
+{
+  "name": "@meksiabdou/react-native-barcode-mask-example",
+  "description": "Example app for @meksiabdou/react-native-barcode-mask",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "start": "react-native start",
+    "pods": "pod-install --quiet",
+    "postinstall": "patch-package"
+  },
+  "dependencies": {
+    "@miblanchard/react-native-slider": "^2.1.0",
+    "react": "17.0.2",
+    "react-native": "0.68.2",
+    "react-native-reanimated": "^2.9.1",
+    "react-native-vision-camera": "2.14.0",
+    "vision-camera-code-scanner": "^0.2.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/runtime": "^7.12.5",
+    "babel-plugin-module-resolver": "^4.1.0",
+    "metro-react-native-babel-preset": "^0.67.0",
+    "patch-package": "^6.4.7",
+    "postinstall-postinstall": "^2.1.0"
+  }
+}
