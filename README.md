@@ -1,6 +1,6 @@
 # @meksiabdou/react-native-barcode-mask
 
-BarcodeMask Component for React-Native Camera
+BarcodeMask Component For React-Native Camera
 
 ![bundlephobia](https://badgen.net/bundlephobia/minzip/@meksiabdou/react-native-barcode-mask)
 ![downloads](https://badgen.net/npm/dt/@meksiabdou/react-native-barcode-mask)
@@ -8,8 +8,7 @@ BarcodeMask Component for React-Native Camera
 ![license](https://badgen.net/github/license/meksiabdou/react-native-barcode-mask)
 [![Known Vulnerabilities](https://snyk.io/test/github/meksiabdou/react-native-barcode-mask/badge.svg?targetFile=package.json)](https://snyk.io/test/github/meksiabdou/react-native-barcode-mask?targetFile=package.json)
 
-![QR](https://i.imgur.com/mwkbsE7.gif)
-
+[![Watch the video](https://i.imgur.com/VOYum4o.jpg)](https://i.imgur.com/y7JEoAF.mp4)
 
 ## Requirements
 
@@ -103,22 +102,22 @@ export default App;
 
 ### BarcodeMaskProps
 
-| name             | type          | description                           | default |
-| ---------------- | ------------- | ------------------------------------- | ------- |
-| width            | number | Width of the Barcode Finder Area      | 280     |
-| height           | number | Height of the Barcode Finder Area     | 230     |
-| edgeWidth        | number | Width of corner edges                 | 20      |
-| edgeHeight       | number | Height of corner edges                | 20      |
-| edgeColor        | string        | Color of corner edges                 | #fff    |
-| edgeRadius       | number        | Border Radius of corner edges         | 0       |
-| edgeBorderWidth  | number | Thickness of corner edges             | 4       |
-| backgroundColor  | string        | Background color of Outer Finder Area | #eee    |
-| maskOpacity      | number        | Opacity of Outer Finder Area          | 1       |
-| showAnimatedLine | boolean       | Whether to show Animated Line         | true    |
-| animatedLineThickness | number | Thickness of Animated Line | 2 |
+| name                    | type                       | description                                      | default      |
+| ----------------------- | -------------------------- | ------------------------------------------------ | ------------ |
+| width                   | number                     | Width of the Barcode Finder Area                 | 280          |
+| height                  | number                     | Height of the Barcode Finder Area                | 230          |
+| edgeWidth               | number                     | Width of corner edges                            | 20           |
+| edgeHeight              | number                     | Height of corner edges                           | 20           |
+| edgeColor               | string                     | Color of corner edges                            | #fff         |
+| edgeRadius              | number                     | Border Radius of corner edges                    | 0            |
+| edgeBorderWidth         | number                     | Thickness of corner edges                        | 4            |
+| backgroundColor         | string                     | Background color of Outer Finder Area            | #eee         |
+| maskOpacity             | number                     | Opacity of Outer Finder Area                     | 1            |
+| showAnimatedLine        | boolean                    | Whether to show Animated Line                    | true         |
+| animatedLineThickness   | number                     | Thickness of Animated Line                       | 2            |
 | animatedLineOrientation | 'vertical' or 'horizontal' | Orientation that the Animated Line will be drawn | 'horizontal' |
-| animatedLineColor | string | Color of Animated Line | #fff |
-| animationDuration | number | Duration of Animated Line animation (in ms) | 20000 |
+| animatedLineColor       | string                     | Color of Animated Line                           | #fff         |
+| animationDuration       | number                     | Duration of Animated Line animation (in ms)      | 20000        |
 
 ## Contributing
 
