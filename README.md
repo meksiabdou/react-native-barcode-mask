@@ -8,6 +8,9 @@ BarcodeMask Component for React-Native Camera
 ![license](https://badgen.net/github/license/meksiabdou/react-native-barcode-mask)
 [![Known Vulnerabilities](https://snyk.io/test/github/meksiabdou/react-native-barcode-mask/badge.svg?targetFile=package.json)](https://snyk.io/test/github/meksiabdou/react-native-barcode-mask?targetFile=package.json)
 
+![](https://i.imgur.com/mwkbsE7.gif)
+
+
 ## Requirements
 
 - [react-native-reanimated v2.2.0 or higher](https://github.com/software-mansion/react-native-reanimated)
