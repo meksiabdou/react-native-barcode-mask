@@ -13,4 +13,5 @@ export interface BarcodeMaskProps {
   edgeBorderWidth?: number;
   edgeRadius?: number;
   animatedLineColor?: string;
+  onPress?: () => void
 }

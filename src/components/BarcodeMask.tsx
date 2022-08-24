@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, ViewStyle } from 'react-native';
+import { StyleSheet, ViewStyle, TouchableOpacity } from 'react-native';
 import Reanimated, {
   useSharedValue,
   useAnimatedStyle,
@@ -8,6 +8,7 @@ import Reanimated, {
 } from 'react-native-reanimated';
 import useLayout from '../hooks/useLayout';
 import type { BarcodeMaskProps } from '../types';
+
 
 const BarcodeMask = (props: BarcodeMaskProps) => {
   const {
@@ -25,6 +26,7 @@ const BarcodeMask = (props: BarcodeMaskProps) => {
     edgeHeight,
     edgeBorderWidth,
     edgeRadius,
+    onPress,
   } = props;
   const translationY = useSharedValue(0);
   const translationX = useSharedValue(0);
@@ -38,6 +40,8 @@ const BarcodeMask = (props: BarcodeMaskProps) => {
   const EDGE_HEIGHT = typeof edgeHeight === 'number' ?  edgeHeight : 25;
   const EDGE_BORDER_WIDTH = typeof edgeBorderWidth  === 'number' ? edgeBorderWidth : 4;
   const EDGE_RADIUS = typeof edgeRadius === 'number' ? edgeRadius: 0;
+
+  const TouchableOpacityAnimated = Reanimated.createAnimatedComponent(TouchableOpacity);
 
   const styleLine = useAnimatedStyle(() => {
     return {
@@ -125,7 +129,8 @@ const BarcodeMask = (props: BarcodeMaskProps) => {
           />
         );
       })}
-      <Reanimated.View
+      <TouchableOpacityAnimated
+        onPress={onPress}
         style={[styles.mask, { width: maskWidth, height: maskHight }]}
       >
         {Array.from({ length: 2 }).map((_, index) => {
@@ -192,7 +197,7 @@ const BarcodeMask = (props: BarcodeMaskProps) => {
             ]}
           />
         ) : null}
-      </Reanimated.View>
+      </TouchableOpacityAnimated>
     </Reanimated.View>
   );
 };
