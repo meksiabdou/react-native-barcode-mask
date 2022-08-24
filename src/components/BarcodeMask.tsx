@@ -5,10 +5,10 @@ import Reanimated, {
   useAnimatedStyle,
   withRepeat,
   withTiming,
+  cancelAnimation,
 } from 'react-native-reanimated';
 import useLayout from '../hooks/useLayout';
 import type { BarcodeMaskProps } from '../types';
-
 
 const BarcodeMask = (props: BarcodeMaskProps) => {
   const {
@@ -26,6 +26,7 @@ const BarcodeMask = (props: BarcodeMaskProps) => {
     edgeHeight,
     edgeBorderWidth,
     edgeRadius,
+    isActive,
     onPress,
   } = props;
   const translationY = useSharedValue(0);
@@ -37,11 +38,13 @@ const BarcodeMask = (props: BarcodeMaskProps) => {
   const [maskWidth, setMaskWidth] = useState(280);
   const opacity = outerMaskOpacity || 1;
   const EDGE_WIDTH = typeof edgeWidth === 'number' ? edgeWidth : 25;
-  const EDGE_HEIGHT = typeof edgeHeight === 'number' ?  edgeHeight : 25;
-  const EDGE_BORDER_WIDTH = typeof edgeBorderWidth  === 'number' ? edgeBorderWidth : 4;
-  const EDGE_RADIUS = typeof edgeRadius === 'number' ? edgeRadius: 0;
+  const EDGE_HEIGHT = typeof edgeHeight === 'number' ? edgeHeight : 25;
+  const EDGE_BORDER_WIDTH =
+    typeof edgeBorderWidth === 'number' ? edgeBorderWidth : 4;
+  const EDGE_RADIUS = typeof edgeRadius === 'number' ? edgeRadius : 0;
 
-  const TouchableOpacityAnimated = Reanimated.createAnimatedComponent(TouchableOpacity);
+  const TouchableOpacityAnimated =
+    Reanimated.createAnimatedComponent(TouchableOpacity);
 
   const styleLine = useAnimatedStyle(() => {
     return {
@@ -77,20 +80,35 @@ const BarcodeMask = (props: BarcodeMaskProps) => {
   }, [defaultHeight, defaultWidth]);
 
   useEffect((): ReturnType<any> => {
-    if (animatedLineOrientation && animatedLineOrientation === 'vertical') {
-      translationX.value = -(maskWidth / 2) + EDGE_BORDER_WIDTH;
-      translationY.value = 0;
-      lineHeight.value = maskHight - 10;
-      lineWidth.value = animatedLineThickness;
-      translationX.value = setAnimation(maskWidth / 2 - EDGE_BORDER_WIDTH);
-    } else {
-      translationX.value = 0;
-      translationY.value = EDGE_BORDER_WIDTH;
-      lineHeight.value = animatedLineThickness;
-      lineWidth.value = maskWidth - 10;
-      translationY.value = setAnimation(maskHight - EDGE_BORDER_WIDTH);
+    if (isActive) {
+      if (animatedLineOrientation && animatedLineOrientation === 'vertical') {
+        translationX.value = -(maskWidth / 2) + EDGE_BORDER_WIDTH;
+        translationY.value = 0;
+        lineHeight.value = maskHight - 10;
+        lineWidth.value = animatedLineThickness;
+        translationX.value = setAnimation(maskWidth / 2 - EDGE_BORDER_WIDTH);
+      } else {
+        translationX.value = 0;
+        translationY.value = EDGE_BORDER_WIDTH;
+        lineHeight.value = animatedLineThickness;
+        lineWidth.value = maskWidth - 10;
+        translationY.value = setAnimation(maskHight - EDGE_BORDER_WIDTH);
+      }
     }
-  }, [lineAnimationDuration, maskHight, maskWidth, animatedLineOrientation, animatedLineThickness]);
+  }, [
+    lineAnimationDuration,
+    maskHight,
+    maskWidth,
+    animatedLineOrientation,
+    animatedLineThickness,
+    isActive,
+  ]);
+
+  useEffect(() => {
+    if (isActive === false) {
+      cancelAnimation(translationY);
+    }
+  }, [isActive]);
 
   return (
     <Reanimated.View style={[styles.container]}>
@@ -118,7 +136,7 @@ const BarcodeMask = (props: BarcodeMaskProps) => {
             key={index.toString()}
             style={[
               styles.back,
-              { backgroundColor: backgroundColor},
+              { backgroundColor: backgroundColor },
               index % 2 === 0 ? { left: 0 } : { right: 0 },
               {
                 height: maskHight,
@@ -131,6 +149,7 @@ const BarcodeMask = (props: BarcodeMaskProps) => {
       })}
       <TouchableOpacityAnimated
         onPress={onPress}
+        activeOpacity={1}
         style={[styles.mask, { width: maskWidth, height: maskHight }]}
       >
         {Array.from({ length: 2 }).map((_, index) => {
@@ -191,7 +210,10 @@ const BarcodeMask = (props: BarcodeMaskProps) => {
               styles.line,
               {
                 backgroundColor: animatedLineColor,
-                top: animatedLineOrientation === 'vertical' ? EDGE_BORDER_WIDTH : 0
+                top:
+                  animatedLineOrientation === 'vertical'
+                    ? EDGE_BORDER_WIDTH
+                    : 0,
               },
               styleLine,
             ]}
@@ -229,7 +251,6 @@ const styles = StyleSheet.create({
   },
 });
 
-
 BarcodeMask.defaultProps = {
   width: 280,
   height: 230,
@@ -245,6 +266,8 @@ BarcodeMask.defaultProps = {
   lineAnimationDuration: 2000,
   animatedLineThickness: 3,
   showAnimatedLine: true,
+  isActive: true,
+  onPress: undefined,
 };
 
 export default BarcodeMask;

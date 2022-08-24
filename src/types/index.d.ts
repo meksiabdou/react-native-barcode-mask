@@ -1,3 +1,5 @@
+import type { GestureResponderEvent } from "react-native";
+
 export interface BarcodeMaskProps {
   lineAnimationDuration?: number;
   showAnimatedLine?: boolean;
@@ -13,5 +15,6 @@ export interface BarcodeMaskProps {
   edgeBorderWidth?: number;
   edgeRadius?: number;
   animatedLineColor?: string;
-  onPress?: () => void
+  isActive?: boolean;
+  onPress?: (event?: GestureResponderEvent) => void;
 }

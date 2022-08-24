@@ -8,6 +8,7 @@ export default function App() {
   const [width, setWidth] = React.useState<any>(300);
   const [height, setHeight] = React.useState<any>(280);
   const init = Dimensions.get('window');
+  const [isActive, setIsActive] = React.useState<boolean>(true);
 
   return (
     <View style={styles.container}>
@@ -27,18 +28,23 @@ export default function App() {
           animatedLineColor={'#0097AB'}
           animatedLineThickness={3}
           animatedLineOrientation="horizontal"
+          isActive={isActive}
+          onPress={() => {
+            console.log('Press');
+            setIsActive(!isActive);
+          }}
         />
       </RNVCamera>
       <View style={styles.slider}>
         <Slider
           value={width}
-          onValueChange={(value : any) => setWidth(value[0])}
+          onValueChange={(value: any) => setWidth(value[0])}
           maximumValue={init.width - 50}
           minimumValue={100}
         />
         <Slider
           value={height}
-          onValueChange={(value : any) => setHeight(value[0])}
+          onValueChange={(value: any) => setHeight(value[0])}
           maximumValue={init.height - 50}
           minimumValue={100}
         />
