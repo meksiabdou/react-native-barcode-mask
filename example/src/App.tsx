@@ -5,7 +5,7 @@ import { Slider } from '@miblanchard/react-native-slider';
 import { Dimensions, StyleSheet, View } from 'react-native';
 
 export default function App() {
-  const [width, setWidth] = React.useState<any>(300);
+  const [width, setWidth] = React.useState<any>(350);
   const [height, setHeight] = React.useState<any>(280);
   const init = Dimensions.get('window');
   const [isActive, setIsActive] = React.useState<boolean>(true);
@@ -18,19 +18,19 @@ export default function App() {
           showAnimatedLine={true}
           width={width}
           height={height}
-          outerMaskOpacity={0.4}
-          backgroundColor="#eee"
+          outerMaskOpacity={0.6}
+          backgroundColor="#000"
           edgeColor={'#fff'}
-          edgeBorderWidth={4}
-          edgeHeight={25}
-          edgeWidth={25}
-          edgeRadius={5}
-          animatedLineColor={'#0097AB'}
+          edgeBorderWidth={3}
+          edgeHeight={20}
+          edgeWidth={20}
+          edgeRadius={0}
+          animatedLineColor={'#fff'}
           animatedLineThickness={3}
           animatedLineOrientation="horizontal"
           isActive={isActive}
-          onPress={() => {
-            console.log('Press');
+          onPress={(e) => {
+            console.log(e?.nativeEvent);
             setIsActive(!isActive);
           }}
         />
