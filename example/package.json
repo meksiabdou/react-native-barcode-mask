@@ -14,7 +14,7 @@
     "@miblanchard/react-native-slider": "^2.1.0",
     "react": "17.0.2",
     "react-native": "0.68.2",
-    "react-native-reanimated": "^2.9.1",
+    "react-native-reanimated": "^2.10.0",
     "react-native-vision-camera": "2.14.0",
     "vision-camera-code-scanner": "^0.2.0"
   },
