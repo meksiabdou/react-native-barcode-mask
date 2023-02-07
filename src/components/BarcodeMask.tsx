@@ -12,6 +12,7 @@ import Reanimated, {
   withTiming,
   cancelAnimation,
   withSpring,
+  WithSpringConfig,
 } from 'react-native-reanimated';
 import useLayout from '../hooks/useLayout';
 import type { BarcodeMaskProps } from '../types';
@@ -28,11 +29,10 @@ const checkNumbre = (value: any, defaultValue = 0) => {
   return defaultValue;
 };
 
-const springConfig = { damping: 15, stiffness: 100, mass: 0.5 };
-
-const setAnimation = (value: any, config: any = springConfig) => {
-  'worklet';
-  return withSpring(value, config);
+const springConfig: WithSpringConfig = {
+  damping: 15,
+  stiffness: 100,
+  mass: 0.5,
 };
 
 const BarcodeMask = (props: BarcodeMaskProps) => {
@@ -110,9 +110,18 @@ const BarcodeMask = (props: BarcodeMaskProps) => {
     };
   });
 
+  const setAnimation = (
+    value: any,
+    config: WithSpringConfig = springConfig
+  ) => {
+    'worklet';
+    return withSpring(value, config);
+  };
+
   const borderMaskStyle = (index: number = 0) => {
     'worklet';
     return useAnimatedStyle(() => {
+      'worklet';
       return {
         right: setAnimation(
           index % 2 === 0

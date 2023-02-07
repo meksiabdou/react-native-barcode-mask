@@ -1,6 +1,6 @@
 {
   "name": "@meksiabdou/react-native-barcode-mask",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "BarcodeMask Component For React-Native Camera",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -64,7 +64,7 @@
     "react": "17.0.2",
     "react-native": "0.68.2",
     "react-native-builder-bob": "^0.18.3",
-    "react-native-reanimated": "^2.10.0",
+    "react-native-reanimated": "^2.14.4",
     "release-it": "^15.0.0",
     "typescript": "^4.5.2"
   },
@@ -74,7 +74,7 @@
   "peerDependencies": {
     "react": "*",
     "react-native": "*",
-    "react-native-reanimated": "^2.10.0"
+    "react-native-reanimated": "*"
   },
   "jest": {
     "preset": "react-native",
