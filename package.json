@@ -1,6 +1,6 @@
 {
   "name": "@meksiabdou/react-native-barcode-mask",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "BarcodeMask Component For React-Native Camera",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",

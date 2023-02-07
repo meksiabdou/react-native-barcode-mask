@@ -1,9 +1,11 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, { useEffect } from 'react';
 import {
   StyleSheet,
   ViewStyle,
   TouchableOpacity,
   StatusBar,
+  ViewProps,
 } from 'react-native';
 import Reanimated, {
   useSharedValue,
@@ -118,20 +120,6 @@ const BarcodeMask = (props: BarcodeMaskProps) => {
     return withSpring(value, config);
   };
 
-  const borderMaskStyle = (index: number = 0) => {
-    'worklet';
-    return useAnimatedStyle(() => {
-      'worklet';
-      return {
-        right: setAnimation(
-          index % 2 === 0
-            ? -EDGE_BORDER_WIDTH
-            : maskWidth.value - EDGE_WIDTH + EDGE_BORDER_WIDTH
-        ),
-      };
-    });
-  };
-
   const setAnimationTranslation = (value = 0) => {
     return withRepeat(
       withTiming(value, {
@@ -145,6 +133,7 @@ const BarcodeMask = (props: BarcodeMaskProps) => {
   useEffect(() => {
     maskHight.value = setAnimation(checkNumbre(defaultHeight, DEFAULT_HEIGHT));
     maskWidth.value = setAnimation(checkNumbre(defaultWidth, DEFAULT_WIDTH));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultHeight, defaultWidth]);
 
   useEffect(() => {
@@ -154,6 +143,7 @@ const BarcodeMask = (props: BarcodeMaskProps) => {
       (height - (!portrait ? _maskHight + statusBarHeight : _maskHight)) / 2;
     outMaskWidthWidth.value = _maskHight;
     outMaskWidthHight.value = (width - _maskWidth) / 2;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [height, width, defaultHeight, defaultWidth, portrait]);
 
   useEffect((): ReturnType<any> => {
@@ -179,6 +169,7 @@ const BarcodeMask = (props: BarcodeMaskProps) => {
         );
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     lineAnimationDuration,
     defaultHeight,
@@ -193,7 +184,40 @@ const BarcodeMask = (props: BarcodeMaskProps) => {
       cancelAnimation(translationY);
       cancelAnimation(translationX);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isActive]);
+
+  const Edge = ({ index, style, ...rest }: ViewProps & { index: number }) => {
+    const edgeAnimationStyle = useAnimatedStyle(() => {
+      'worklet';
+      return {
+        right: setAnimation(
+          index % 2 === 0
+            ? -EDGE_BORDER_WIDTH
+            : maskWidth.value - EDGE_WIDTH + EDGE_BORDER_WIDTH,
+          springConfig
+        ),
+      };
+    });
+    return (
+      <Reanimated.View
+        style={[
+          styles.borders,
+          {
+            width: EDGE_WIDTH,
+            height: EDGE_HEIGHT,
+            borderColor: edgeColor,
+            borderWidth: EDGE_BORDER_WIDTH,
+            borderLeftWidth: index % 2 === 0 ? 0 : EDGE_BORDER_WIDTH,
+            borderRightWidth: index % 2 === 0 ? EDGE_BORDER_WIDTH : 0,
+          },
+          style,
+          edgeAnimationStyle,
+        ]}
+        {...rest}
+      />
+    );
+  };
 
   return (
     <Reanimated.View style={[styles.container]}>
@@ -238,47 +262,29 @@ const BarcodeMask = (props: BarcodeMaskProps) => {
       >
         {Array.from({ length: 2 }).map((_, index) => {
           return (
-            <Reanimated.View
+            <Edge
               key={index.toString()}
-              style={[
-                styles.borders,
-                {
-                  width: EDGE_WIDTH,
-                  height: EDGE_HEIGHT,
-                  borderColor: edgeColor,
-                  top: -EDGE_BORDER_WIDTH,
-                  borderWidth: EDGE_BORDER_WIDTH,
-                  borderBottomWidth: 0,
-                  borderLeftWidth: index % 2 === 0 ? 0 : EDGE_BORDER_WIDTH,
-                  borderRightWidth: index % 2 === 0 ? EDGE_BORDER_WIDTH : 0,
-                  borderTopRightRadius: index % 2 === 0 ? EDGE_RADIUS : 0,
-                  borderTopLeftRadius: index % 2 === 0 ? 0 : EDGE_RADIUS,
-                },
-                borderMaskStyle(index),
-              ]}
+              index={index}
+              style={{
+                top: -EDGE_BORDER_WIDTH,
+                borderBottomWidth: 0,
+                borderTopRightRadius: index % 2 === 0 ? EDGE_RADIUS : 0,
+                borderTopLeftRadius: index % 2 === 0 ? 0 : EDGE_RADIUS,
+              }}
             />
           );
         })}
         {Array.from({ length: 2 }).map((_, index) => {
           return (
-            <Reanimated.View
+            <Edge
               key={index.toString()}
-              style={[
-                styles.borders,
-                {
-                  width: EDGE_WIDTH,
-                  height: EDGE_HEIGHT,
-                  borderColor: edgeColor,
-                  bottom: -EDGE_BORDER_WIDTH,
-                  borderWidth: EDGE_BORDER_WIDTH,
-                  borderTopWidth: 0,
-                  borderLeftWidth: index % 2 === 0 ? 0 : EDGE_BORDER_WIDTH,
-                  borderRightWidth: index % 2 === 0 ? EDGE_BORDER_WIDTH : 0,
-                  borderBottomRightRadius: index % 2 === 0 ? EDGE_RADIUS : 0,
-                  borderBottomLeftRadius: index % 2 === 0 ? 0 : EDGE_RADIUS,
-                },
-                borderMaskStyle(index),
-              ]}
+              index={index}
+              style={{
+                bottom: -EDGE_BORDER_WIDTH,
+                borderTopWidth: 0,
+                borderBottomRightRadius: index % 2 === 0 ? EDGE_RADIUS : 0,
+                borderBottomLeftRadius: index % 2 === 0 ? 0 : EDGE_RADIUS,
+              }}
             />
           );
         })}
