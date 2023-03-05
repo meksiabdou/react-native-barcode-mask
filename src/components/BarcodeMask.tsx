@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import {
   StyleSheet,
   ViewStyle,
@@ -187,37 +187,43 @@ const BarcodeMask = (props: BarcodeMaskProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isActive]);
 
-  const Edge = ({ index, style, ...rest }: ViewProps & { index: number }) => {
-    const edgeAnimationStyle = useAnimatedStyle(() => {
-      'worklet';
-      return {
-        right: setAnimation(
-          index % 2 === 0
-            ? -EDGE_BORDER_WIDTH
-            : maskWidth.value - EDGE_WIDTH + EDGE_BORDER_WIDTH,
-          springConfig
-        ),
-      };
-    });
-    return (
-      <Reanimated.View
-        style={[
-          styles.borders,
-          {
-            width: EDGE_WIDTH,
-            height: EDGE_HEIGHT,
-            borderColor: edgeColor,
-            borderWidth: EDGE_BORDER_WIDTH,
-            borderLeftWidth: index % 2 === 0 ? 0 : EDGE_BORDER_WIDTH,
-            borderRightWidth: index % 2 === 0 ? EDGE_BORDER_WIDTH : 0,
-          },
-          style,
-          edgeAnimationStyle,
-        ]}
-        {...rest}
-      />
-    );
-  };
+  const Edge = useCallback(
+    ({ index, style, ...rest }: ViewProps & { index: number }) => {
+      const edgeAnimationStyle = useAnimatedStyle(() => {
+        'worklet';
+        return {
+          right: setAnimation(
+            index % 2 === 0
+              ? -(EDGE_BORDER_WIDTH - 1)
+              : maskWidth.value - EDGE_WIDTH + EDGE_BORDER_WIDTH,
+            springConfig
+          ),
+        };
+      });
+      return (
+        <Reanimated.View
+          style={[
+            styles.borders,
+            {
+              width: EDGE_WIDTH,
+              height: EDGE_HEIGHT,
+              borderColor: edgeColor,
+              borderWidth: EDGE_BORDER_WIDTH,
+              borderLeftWidth: index % 2 === 0 ? 0 : EDGE_BORDER_WIDTH,
+              borderRightWidth: index % 2 === 0 ? EDGE_BORDER_WIDTH : 0,
+              borderTopWidth: 0,
+              borderBottomRightRadius: index % 2 === 0 ? EDGE_RADIUS : 0,
+              borderBottomLeftRadius: index % 2 === 0 ? 0 : EDGE_RADIUS,
+            },
+            style,
+            edgeAnimationStyle,
+          ]}
+          {...rest}
+        />
+      );
+    },
+    [edgeWidth, edgeHeight, edgeBorderWidth, edgeRadius, edgeColor, edgeBorderWidth]
+  );
 
   return (
     <Reanimated.View style={[styles.container]}>
@@ -266,10 +272,8 @@ const BarcodeMask = (props: BarcodeMaskProps) => {
               key={index.toString()}
               index={index}
               style={{
-                top: -EDGE_BORDER_WIDTH,
-                borderBottomWidth: 0,
-                borderTopRightRadius: index % 2 === 0 ? EDGE_RADIUS : 0,
-                borderTopLeftRadius: index % 2 === 0 ? 0 : EDGE_RADIUS,
+                top: -(EDGE_BORDER_WIDTH - 1),
+                transform: [{rotate: index % 2 === 0 ? "270deg" : '90deg'}]
               }}
             />
           );
@@ -280,10 +284,7 @@ const BarcodeMask = (props: BarcodeMaskProps) => {
               key={index.toString()}
               index={index}
               style={{
-                bottom: -EDGE_BORDER_WIDTH,
-                borderTopWidth: 0,
-                borderBottomRightRadius: index % 2 === 0 ? EDGE_RADIUS : 0,
-                borderBottomLeftRadius: index % 2 === 0 ? 0 : EDGE_RADIUS,
+                bottom: -(EDGE_BORDER_WIDTH - 1),
               }}
             />
           );
