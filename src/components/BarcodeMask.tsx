@@ -2,10 +2,10 @@
 import React, { useCallback, useEffect } from 'react';
 import {
   StyleSheet,
-  ViewStyle,
   TouchableOpacity,
   StatusBar,
-  ViewProps,
+  type ViewStyle,
+  type ViewProps,
 } from 'react-native';
 import Reanimated, {
   useSharedValue,
@@ -14,7 +14,7 @@ import Reanimated, {
   withTiming,
   cancelAnimation,
   withSpring,
-  WithSpringConfig,
+  type WithSpringConfig,
 } from 'react-native-reanimated';
 import useLayout from '../hooks/useLayout';
 import type { BarcodeMaskProps } from '../types';
@@ -75,7 +75,7 @@ const BarcodeMask = (props: BarcodeMaskProps) => {
   const TouchableOpacityAnimated =
     Reanimated.createAnimatedComponent(TouchableOpacity);
 
-  const statusBarHeight = checkNumbre(StatusBar.currentHeight, 35);
+  const statusBarHeight = checkNumbre(StatusBar.currentHeight, 30);
 
   const styleLine = useAnimatedStyle(() => {
     return {
@@ -101,8 +101,8 @@ const BarcodeMask = (props: BarcodeMaskProps) => {
 
   const outMaskStyleWidth = useAnimatedStyle(() => {
     return {
-      height: outMaskWidthWidth.value,
-      width: outMaskWidthHight.value,
+      height: outMaskWidthHight.value,
+      width: outMaskWidthWidth.value,
     };
   });
 
@@ -116,7 +116,6 @@ const BarcodeMask = (props: BarcodeMaskProps) => {
     value: any,
     config: WithSpringConfig = springConfig
   ) => {
-    'worklet';
     return withSpring(value, config);
   };
 
@@ -131,49 +130,50 @@ const BarcodeMask = (props: BarcodeMaskProps) => {
   };
 
   useEffect(() => {
-    maskHight.value = setAnimation(checkNumbre(defaultHeight, DEFAULT_HEIGHT));
-    maskWidth.value = setAnimation(checkNumbre(defaultWidth, DEFAULT_WIDTH));
+    maskHight.value = checkNumbre(defaultHeight, DEFAULT_HEIGHT);
+    maskWidth.value = checkNumbre(defaultWidth, DEFAULT_WIDTH);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultHeight, defaultWidth]);
 
   useEffect(() => {
-    const _maskHight = checkNumbre(defaultHeight, DEFAULT_HEIGHT);
-    const _maskWidth = checkNumbre(defaultWidth, DEFAULT_WIDTH);
+    outMaskWidthWidth.value = (width - maskWidth.value) / 2;
+    outMaskWidthHight.value = maskHight.value;
     outMaskHightHight.value =
-      (height - (!portrait ? _maskHight + statusBarHeight : _maskHight)) / 2;
-    outMaskWidthWidth.value = _maskHight;
-    outMaskWidthHight.value = (width - _maskWidth) / 2;
+      (height -
+        (!portrait
+          ? maskHight.value + (statusBarHeight - MASK_PADDING)
+          : maskHight.value)) /
+      2;
+    // outMaskHightHight.value = (height - maskHight.value) / 2 - 10;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [height, width, defaultHeight, defaultWidth, portrait]);
+  }, [height, width, maskHight.value, maskWidth.value, portrait]);
 
   useEffect((): ReturnType<any> => {
     if (isActive) {
       const lineThickness = checkNumbre(animatedLineThickness, 2);
-      const _maskHight = checkNumbre(defaultHeight, DEFAULT_HEIGHT);
-      const _maskWidth = checkNumbre(defaultWidth, DEFAULT_WIDTH);
       if (animatedLineOrientation && animatedLineOrientation === 'vertical') {
         translationX.value = 0;
         translationY.value = 0;
-        lineHeight.value = setAnimation(_maskHight);
+        lineHeight.value = maskHight.value;
         lineWidth.value = setAnimation(lineThickness);
         translationX.value = setAnimationTranslation(
-          _maskWidth - MASK_PADDING * 2
+          maskWidth.value - MASK_PADDING * 2
         );
       } else {
         translationX.value = 0;
         translationY.value = 0;
         lineHeight.value = setAnimation(lineThickness);
-        lineWidth.value = setAnimation(_maskWidth);
+        lineWidth.value = maskWidth.value;
         translationY.value = setAnimationTranslation(
-          _maskHight - MASK_PADDING * 2
+          maskHight.value - MASK_PADDING * 2
         );
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     lineAnimationDuration,
-    defaultHeight,
-    defaultWidth,
+    maskHight.value,
+    maskWidth.value,
     animatedLineOrientation,
     animatedLineThickness,
     isActive,
@@ -189,17 +189,6 @@ const BarcodeMask = (props: BarcodeMaskProps) => {
 
   const Edge = useCallback(
     ({ index, style, ...rest }: ViewProps & { index: number }) => {
-      const edgeAnimationStyle = useAnimatedStyle(() => {
-        'worklet';
-        return {
-          right: setAnimation(
-            index % 2 === 0
-              ? -(EDGE_BORDER_WIDTH - 1)
-              : maskWidth.value - EDGE_WIDTH + EDGE_BORDER_WIDTH,
-            springConfig
-          ),
-        };
-      });
       return (
         <Reanimated.View
           style={[
@@ -215,14 +204,17 @@ const BarcodeMask = (props: BarcodeMaskProps) => {
               borderBottomRightRadius: index % 2 === 0 ? EDGE_RADIUS : 0,
               borderBottomLeftRadius: index % 2 === 0 ? 0 : EDGE_RADIUS,
             },
+            index % 2 === 0
+              ? { right: -(EDGE_BORDER_WIDTH - 1) }
+              : { left: -(EDGE_BORDER_WIDTH - 1) },
             style,
-            edgeAnimationStyle,
+            //edgeAnimationStyle,
           ]}
           {...rest}
         />
       );
     },
-    [edgeWidth, edgeHeight, edgeBorderWidth, edgeRadius, edgeColor, edgeBorderWidth]
+    [EDGE_WIDTH, EDGE_HEIGHT, edgeColor, EDGE_BORDER_WIDTH, EDGE_RADIUS]
   );
 
   return (
@@ -273,7 +265,7 @@ const BarcodeMask = (props: BarcodeMaskProps) => {
               index={index}
               style={{
                 top: -(EDGE_BORDER_WIDTH - 1),
-                transform: [{rotate: index % 2 === 0 ? "270deg" : '90deg'}]
+                transform: [{ rotate: index % 2 === 0 ? '270deg' : '90deg' }],
               }}
             />
           );
@@ -323,10 +315,12 @@ const styles = StyleSheet.create({
   },
   back: {
     position: 'absolute',
+    overflow: 'hidden',
   },
   mask: {
     position: 'relative',
     maxHeight: '100%',
+    maxWidth: '100%',
     paddingHorizontal: MASK_PADDING,
     paddingVertical: MASK_PADDING,
   },

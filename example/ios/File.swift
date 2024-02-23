@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  BarcodeMaskExample
+//  ReactNativeBarcodeMaskExample
 //
 
 import Foundation

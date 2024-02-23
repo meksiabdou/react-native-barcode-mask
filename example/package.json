@@ -1,29 +1,31 @@
 {
   "name": "@meksiabdou/react-native-barcode-mask-example",
-  "description": "Example app for @meksiabdou/react-native-barcode-mask",
   "version": "0.0.1",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
-    "pods": "pod-install --quiet",
-    "postinstall": "patch-package"
+    "build:android": "cd android && ./gradlew assembleDebug --no-daemon --console=plain -PreactNativeArchitectures=arm64-v8a",
+    "build:ios": "cd ios && xcodebuild -workspace ReactNativeBarcodeMaskExample.xcworkspace -scheme ReactNativeBarcodeMaskExample -configuration Debug -sdk iphonesimulator CC=clang CPLUSPLUS=clang++ LD=clang LDPLUSPLUS=clang++ GCC_OPTIMIZATION_LEVEL=0 GCC_PRECOMPILE_PREFIX_HEADER=YES ASSETCATALOG_COMPILER_OPTIMIZATION=time DEBUG_INFORMATION_FORMAT=dwarf COMPILER_INDEX_STORE_ENABLE=NO"
   },
   "dependencies": {
-    "@miblanchard/react-native-slider": "^2.1.0",
-    "react": "17.0.2",
-    "react-native": "0.68.2",
-    "react-native-reanimated": "^2.10.0",
-    "react-native-vision-camera": "2.14.0",
-    "vision-camera-code-scanner": "^0.2.0"
+    "@miblanchard/react-native-slider": "^2.3.1",
+    "react": "18.2.0",
+    "react-native": "0.73.4",
+    "react-native-reanimated": "^3.7.1",
+    "react-native-vision-camera": "^3.9.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.10",
-    "@babel/runtime": "^7.12.5",
-    "babel-plugin-module-resolver": "^4.1.0",
-    "metro-react-native-babel-preset": "^0.67.0",
-    "patch-package": "^6.4.7",
-    "postinstall-postinstall": "^2.1.0"
+    "@babel/core": "^7.20.0",
+    "@babel/preset-env": "^7.20.0",
+    "@babel/runtime": "^7.20.0",
+    "@react-native/babel-preset": "0.73.21",
+    "@react-native/metro-config": "0.73.5",
+    "@react-native/typescript-config": "0.73.1",
+    "babel-plugin-module-resolver": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }
