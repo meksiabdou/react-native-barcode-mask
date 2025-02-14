@@ -23,7 +23,7 @@ const MASK_PADDING = 8;
 const DEFAULT_WIDTH = 280;
 const DEFAULT_HEIGHT = 300;
 
-const checkNumbre = (value: any, defaultValue = 0) => {
+const checkNumber = (value: any, defaultValue = 0) => {
   value = Number(value);
   if (typeof value === 'number' && !isNaN(value) && value !== null) {
     return value;
@@ -39,22 +39,22 @@ const springConfig: WithSpringConfig = {
 
 const BarcodeMask = (props: BarcodeMaskProps) => {
   const {
-    animatedLineColor,
-    outerMaskOpacity,
-    lineAnimationDuration,
-    animatedLineOrientation,
-    animatedLineThickness,
-    edgeColor,
-    width: defaultWidth,
-    height: defaultHeight,
-    showAnimatedLine,
-    backgroundColor,
-    edgeWidth,
-    edgeHeight,
-    edgeBorderWidth,
-    edgeRadius,
-    isActive,
-    onPress,
+    animatedLineColor = '#fff',
+    outerMaskOpacity = 1,
+    lineAnimationDuration = 2000,
+    animatedLineOrientation = 'horizontal',
+    animatedLineThickness = 3,
+    edgeColor = '#fff',
+    width: defaultWidth = DEFAULT_WIDTH,
+    height: defaultHeight = DEFAULT_HEIGHT,
+    showAnimatedLine = true,
+    backgroundColor = '#000',
+    edgeWidth = 25,
+    edgeHeight = 25,
+    edgeBorderWidth = 4,
+    edgeRadius = 0,
+    isActive = true,
+    onPress = undefined,
   } = props;
   const translationY = useSharedValue(0);
   const translationX = useSharedValue(0);
@@ -67,15 +67,15 @@ const BarcodeMask = (props: BarcodeMaskProps) => {
   const outMaskHightHight = useSharedValue<any>(0);
   const { width, height, portrait } = useLayout();
   const opacity = outerMaskOpacity || 1;
-  const EDGE_WIDTH = checkNumbre(edgeWidth, 25);
-  const EDGE_HEIGHT = checkNumbre(edgeHeight, 25);
-  const EDGE_BORDER_WIDTH = checkNumbre(edgeBorderWidth, 4);
-  const EDGE_RADIUS = checkNumbre(edgeRadius, 0);
+  const EDGE_WIDTH = checkNumber(edgeWidth, 25);
+  const EDGE_HEIGHT = checkNumber(edgeHeight, 25);
+  const EDGE_BORDER_WIDTH = checkNumber(edgeBorderWidth, 4);
+  const EDGE_RADIUS = checkNumber(edgeRadius, 0);
 
   const TouchableOpacityAnimated =
     Reanimated.createAnimatedComponent(TouchableOpacity);
 
-  const statusBarHeight = checkNumbre(StatusBar.currentHeight, 30);
+  const statusBarHeight = checkNumber(StatusBar.currentHeight, 30);
 
   const styleLine = useAnimatedStyle(() => {
     return {
@@ -122,7 +122,7 @@ const BarcodeMask = (props: BarcodeMaskProps) => {
   const setAnimationTranslation = (value = 0) => {
     return withRepeat(
       withTiming(value, {
-        duration: checkNumbre(lineAnimationDuration, 2000),
+        duration: checkNumber(lineAnimationDuration, 2000),
       }),
       -1,
       true
@@ -130,8 +130,8 @@ const BarcodeMask = (props: BarcodeMaskProps) => {
   };
 
   useEffect(() => {
-    maskHight.value = checkNumbre(defaultHeight, DEFAULT_HEIGHT);
-    maskWidth.value = checkNumbre(defaultWidth, DEFAULT_WIDTH);
+    maskHight.value = checkNumber(defaultHeight, DEFAULT_HEIGHT);
+    maskWidth.value = checkNumber(defaultWidth, DEFAULT_WIDTH);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultHeight, defaultWidth]);
 
@@ -150,7 +150,7 @@ const BarcodeMask = (props: BarcodeMaskProps) => {
 
   useEffect((): ReturnType<any> => {
     if (isActive) {
-      const lineThickness = checkNumbre(animatedLineThickness, 2);
+      const lineThickness = checkNumber(animatedLineThickness, 2);
       if (animatedLineOrientation && animatedLineOrientation === 'vertical') {
         translationX.value = 0;
         translationY.value = 0;
@@ -333,23 +333,6 @@ const styles = StyleSheet.create({
   },
 });
 
-BarcodeMask.defaultProps = {
-  width: DEFAULT_WIDTH,
-  height: DEFAULT_HEIGHT,
-  edgeWidth: 25,
-  edgeHeight: 25,
-  edgeColor: '#fff',
-  edgeBorderWidth: 4,
-  edgeRadius: 0,
-  backgroundColor: '#000',
-  outerMaskOpacity: 1,
-  animatedLineColor: '#fff',
-  animatedLineOrientation: 'horizontal',
-  lineAnimationDuration: 2000,
-  animatedLineThickness: 3,
-  showAnimatedLine: true,
-  isActive: true,
-  onPress: undefined,
-};
+
 
 export default BarcodeMask;
