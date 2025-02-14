@@ -2,12 +2,13 @@ import * as React from 'react';
 import RNVCamera from './components/RNVCamera';
 import BarcodeMask from '@meksiabdou/react-native-barcode-mask';
 import { Slider } from '@miblanchard/react-native-slider';
-import { Dimensions, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 export default function App() {
-  const [width, setWidth] = React.useState<any>(350);
-  const [height, setHeight] = React.useState<any>(280);
-  const init = Dimensions.get('window');
+  const [size, setSize] = React.useState<{ width: number; height: number }>({
+    height: 280,
+    width: 300,
+  });
   const [isActive, setIsActive] = React.useState<boolean>(true);
 
   return (
@@ -16,8 +17,8 @@ export default function App() {
         <BarcodeMask
           lineAnimationDuration={2000}
           showAnimatedLine={true}
-          width={width}
-          height={height}
+          width={size.width}
+          height={size.height}
           outerMaskOpacity={0.6}
           backgroundColor="#000"
           edgeColor={'#fff'}
@@ -37,15 +38,13 @@ export default function App() {
       </RNVCamera>
       <View style={styles.slider}>
         <Slider
-          value={width}
-          onValueChange={(value: any) => setWidth(value[0])}
-          maximumValue={init.width - 50}
-          minimumValue={100}
-        />
-        <Slider
-          value={height}
-          onValueChange={(value: any) => setHeight(value[0])}
-          maximumValue={init.height - 50}
+          value={size.height}
+          onValueChange={(value) => {
+            if (value[0]) {
+              setSize({ width: value[0] + 50, height: value[0] });
+            }
+          }}
+          maximumValue={360}
           minimumValue={100}
         />
       </View>
