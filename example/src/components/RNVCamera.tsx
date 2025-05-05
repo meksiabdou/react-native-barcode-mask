@@ -21,7 +21,7 @@ interface IProps extends CameraProps {
   children: any;
 }
 
-const RNVCamera: React.FC<IProps> = (props: IProps): JSX.Element => {
+const RNVCamera: React.FC<IProps> = (props: IProps) => {
   const { children } = props;
   const [hasPermission, setHasPermission] = useState(false);
   const [flash, setFlash] = useState<boolean>(false);

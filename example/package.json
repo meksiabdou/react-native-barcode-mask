@@ -1,31 +1,31 @@
 {
   "name": "@meksiabdou/react-native-barcode-mask-example",
-  "version": "0.0.1",
-  "private": true,
+  "version": "1.0.0",
+  "main": "index.js",
   "scripts": {
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
-    "start": "react-native start",
-    "build:android": "cd android && ./gradlew assembleDebug --no-daemon --console=plain -PreactNativeArchitectures=arm64-v8a",
-    "build:ios": "cd ios && xcodebuild -workspace ReactNativeBarcodeMaskExample.xcworkspace -scheme ReactNativeBarcodeMaskExample -configuration Debug -sdk iphonesimulator CC=clang CPLUSPLUS=clang++ LD=clang LDPLUSPLUS=clang++ GCC_OPTIMIZATION_LEVEL=0 GCC_PRECOMPILE_PREFIX_HEADER=YES ASSETCATALOG_COMPILER_OPTIMIZATION=time DEBUG_INFORMATION_FORMAT=dwarf COMPILER_INDEX_STORE_ENABLE=NO"
+    "start": "expo start",
+    "android": "expo run:android",
+    "build": "expo build",
+    "prebuild": "expo prebuild",
+    "ios": "expo run:ios",
+    "web": "expo start --web"
   },
   "dependencies": {
-    "@miblanchard/react-native-slider": "^2.3.1",
-    "react": "18.2.0",
-    "react-native": "0.73.4",
-    "react-native-reanimated": "^3.7.1",
-    "react-native-vision-camera": "^3.9.0"
+    "@expo/metro-runtime": "~5.0.4",
+    "@meksiabdou/react-native-barcode-mask": "link:../node_modules/@meksiabdou/react-native-barcode-mask",
+    "@miblanchard/react-native-slider": "^2.6.0",
+    "expo": "~53.0.7",
+    "expo-status-bar": "~2.2.3",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "react-native": "0.79.2",
+    "react-native-reanimated": "^3.17.5",
+    "react-native-vision-camera": "^4.6.4",
+    "react-native-web": "~0.20.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
-    "@babel/preset-env": "^7.20.0",
-    "@babel/runtime": "^7.20.0",
-    "@react-native/babel-preset": "0.73.21",
-    "@react-native/metro-config": "0.73.5",
-    "@react-native/typescript-config": "0.73.1",
-    "babel-plugin-module-resolver": "^5.0.0"
+    "react-native-builder-bob": "^0.40.9"
   },
-  "engines": {
-    "node": ">=18"
-  }
+  "private": true
 }

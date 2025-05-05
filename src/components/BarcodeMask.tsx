@@ -1,11 +1,12 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, { useCallback, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import {
   StyleSheet,
   TouchableOpacity,
   StatusBar,
   type ViewStyle,
   type ViewProps,
+  I18nManager,
 } from 'react-native';
 import Reanimated, {
   useSharedValue,
@@ -36,6 +37,11 @@ const springConfig: WithSpringConfig = {
   stiffness: 100,
   mass: 0.5,
 };
+
+const TouchableOpacityAnimated =
+  Reanimated.createAnimatedComponent(TouchableOpacity);
+
+const statusBarHeight = checkNumber(StatusBar.currentHeight, 30);
 
 const BarcodeMask = (props: BarcodeMaskProps) => {
   const {
@@ -71,11 +77,7 @@ const BarcodeMask = (props: BarcodeMaskProps) => {
   const EDGE_HEIGHT = checkNumber(edgeHeight, 25);
   const EDGE_BORDER_WIDTH = checkNumber(edgeBorderWidth, 4);
   const EDGE_RADIUS = checkNumber(edgeRadius, 0);
-
-  const TouchableOpacityAnimated =
-    Reanimated.createAnimatedComponent(TouchableOpacity);
-
-  const statusBarHeight = checkNumber(StatusBar.currentHeight, 30);
+  const IS_RTL = I18nManager.isRTL ? -1 : 1;
 
   const styleLine = useAnimatedStyle(() => {
     return {
@@ -144,7 +146,6 @@ const BarcodeMask = (props: BarcodeMaskProps) => {
           ? maskHight.value + (statusBarHeight - MASK_PADDING)
           : maskHight.value)) /
       2;
-    // outMaskHightHight.value = (height - maskHight.value) / 2 - 10;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [height, width, maskHight.value, maskWidth.value, portrait]);
 
@@ -265,7 +266,14 @@ const BarcodeMask = (props: BarcodeMaskProps) => {
               index={index}
               style={{
                 top: -(EDGE_BORDER_WIDTH - 1),
-                transform: [{ rotate: index % 2 === 0 ? '270deg' : '90deg' }],
+                transform: [
+                  {
+                    rotate:
+                      index % 2 === 0
+                        ? `${IS_RTL * 270}deg`
+                        : `${IS_RTL * 90}deg`,
+                  },
+                ],
               }}
             />
           );
@@ -332,7 +340,5 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
 });
-
-
 
 export default BarcodeMask;
