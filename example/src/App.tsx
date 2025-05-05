@@ -2,7 +2,7 @@ import * as React from 'react';
 import RNVCamera from './components/RNVCamera';
 import BarcodeMask from '@meksiabdou/react-native-barcode-mask';
 import { Slider } from '@miblanchard/react-native-slider';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, SafeAreaView, StatusBar } from 'react-native';
 
 export default function App() {
   const [size, setSize] = React.useState<{ width: number; height: number }>({
@@ -12,7 +12,8 @@ export default function App() {
   const [isActive, setIsActive] = React.useState<boolean>(true);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="light-content" />
       <RNVCamera>
         <BarcodeMask
           lineAnimationDuration={2000}
@@ -41,14 +42,14 @@ export default function App() {
           value={size.height}
           onValueChange={(value) => {
             if (value[0]) {
-              setSize({ width: value[0] + 50, height: value[0] });
+              setSize({ width: value[0], height: value[0] });
             }
           }}
           maximumValue={360}
           minimumValue={100}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -59,7 +60,7 @@ const styles = StyleSheet.create({
   slider: {
     position: 'absolute',
     paddingHorizontal: 5,
-    bottom: 20,
+    bottom: 100,
     left: 0,
     right: 0,
     zIndex: 99,
